@@ -4,8 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.museum.mapper.DeviceMapper">
 
-    <select id="allgateway"   parameterType="java.util.List"  resultType="com.example.museum.entity.Gateway">
-        select * from gateway
+    <select id="allmaster"   parameterType="java.util.List"  resultType="com.example.museum.entity.Master">
+        select * from master
     </select>
-
+    <select id="errorList"   parameterType="java.util.List"  resultType="com.example.museum.entity.DeviceError">
+        select * from Dict
+    </select>
+    <select id="allslave"   parameterType="java.util.List"  resultType="com.example.museum.entity.Slave">
+        select * from slave where maddr = #{maddr}
+    </select>
 </mapper>

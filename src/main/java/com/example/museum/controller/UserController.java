@@ -7,6 +7,7 @@ import com.example.museum.entity.User;
 import com.example.museum.entity.Login;
 import com.example.museum.service.UserService;
 import com.example.museum.util.Jwt.TokenUtil;
+import com.example.museum.util.UploadImageUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ import com.example.museum.util.Jwt.TokenUtil;
 
 import java.io.IOException;
 import java.util.List;
-import com.example.museum.util.UploadUtils;
+import com.example.museum.util.*;
 
 @CrossOrigin
 @RestController
@@ -139,7 +140,7 @@ public class UserController {
         // 拿到文件名
         String filename = imgFile.getOriginalFilename();
         // 存放上传图片的文件夹
-        File fileDir = UploadUtils.getImgDirFile();
+        File fileDir = UploadImageUtils.getImgDirFile();
         // 输出文件夹绝对路径  -- 这里的绝对路径是相当于当前项目的路径而不是“容器”路径
         System.out.println(fileDir.getAbsolutePath());
 
