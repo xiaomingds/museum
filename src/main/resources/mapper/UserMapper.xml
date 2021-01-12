@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.museum.mapper.UserMapper">
+    <select id="get" parameterType="int" resultType="com.example.museum.entity.User">
+        select
+            userid,userdate,userAddress, username,userPassword
+        from
+            admin
+        where
+            userid = #{userid};
+    </select>
+    <select id="Login" parameterType="String" resultType="com.example.museum.entity.User">
+        select
+            userId,userDate, userAddress,userName,userPassword
+        from
+            admin
+        where
+            userName = #{userName};
+    </select>
+    <insert id="CreatUser" parameterType="com.example.museum.entity.User" >
+        insert into admin(userName,userPassword,userAddress) values (#{userName},#{userPassword},#{userAddress})
+    </insert>
+
+    <delete id="DelUser" parameterType="int">
+        DELETE FROM admin WHERE userId=#{userId}
+    </delete>
+    <update id="UpdatelUser" parameterType="com.example.museum.entity.User">
+        update admin
+        set userName = #{userName},
+            userPassword = #{userPassword},
+            userAddress = #{userAddress}
+        where userId = #{userId}
+    </update>
+    <select id="allUser"   parameterType="java.util.List"  resultType="com.example.museum.entity.User">
+        select * from admin
+    </select>
+
+
+    <select id="getMenu" parameterType="java.util.List" resultType="com.example.museum.entity.Permissions.MenuItem">
+        SELECT  mt.*
+        FROM sys_user u, sys_role r,user_role ur, menu_item mt, role_menu rp
+        WHERE u.loginName = #{loginName}
+          AND u.userId = ur.userId
+          AND r.roleId = ur.roleId
+          AND r.roleId = rp.roleId
+          AND mt.itemId = rp.itemId;
+
+    </select>
+
+    <!--SELECT user.userId ,user.userName,role.roleName,per.menuName ,per.menuIcon,mt.ItemName,mt.ItemUrl-->
+    <!--FROM sys_user AS user,-->
+    <!--sys_role AS role,-->
+    <!--sys_menu AS per,-->
+    <!--sys_menu_item as mt,-->
+    <!--role_menu,-->
+    <!--user_role-->
+    <!--WHERE user.loginName= #{loginName}-->
+    <!--AND user.userId=user_role.userId-->
+    <!--AND user_role.roleId=role.roleId-->
+    <!--AND role_menu.roleId=role.roleId-->
+    <!--AND role_menu.menuId=per.menuId-->
+    <!--and mt.parentId = per.menuId-->
+</mapper>
