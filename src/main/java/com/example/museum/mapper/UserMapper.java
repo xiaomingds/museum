@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public interface  UserMapper {
     User get(int userid);
-    User Login(String userName);
+    User Login(String loginName);
     int CreatUser(User user);
     int DelUser(int userId);
     int UpdatelUser(User user);

@@ -1,12 +1,18 @@
 package com.example.museum.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 @Data
-public class ApiResult<T> implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class ApiResult<T> implements java.io.Serializable{
     /**
      * 错误码，表示一种错误类型
      * 请求成功，状态码为200

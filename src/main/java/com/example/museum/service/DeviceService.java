@@ -19,11 +19,17 @@ public class DeviceService {
         return deviceMapper.allmaster();
     }
 
-    public List<Slave> allslave(String maddr){
-        return deviceMapper.allslave(maddr);
+    public List<Slave> allslave(){
+        return deviceMapper.allslave();
     }
 
     public  List<DeviceError>errorlist(){
         return deviceMapper.errorList();
+    }
+    public List<Slave>  mslave(String maddr){
+        return  deviceMapper.mslave(maddr);
+    }
+    public int UpdateSlave(Slave slave){
+        return deviceMapper.UpdateSlaver(slave);
     }
 }

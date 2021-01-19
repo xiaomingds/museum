@@ -22,8 +22,8 @@ public class UserService {
     public User get(int userid) {
         return userMapper.get(userid);
     }
-    public User Login(String userName){
-        return userMapper.Login(userName);
+    public User Login(String loginName){
+        return userMapper.Login(loginName);
     }
     public  int CreatUser(User user){
        return userMapper.CreatUser(user);

@@ -11,6 +11,21 @@
         select * from Dict
     </select>
     <select id="allslave"   parameterType="java.util.List"  resultType="com.example.museum.entity.Slave">
+        select * from slave
+    </select>
+    <select id="mslave"   parameterType="java.util.List"  resultType="com.example.museum.entity.Slave">
         select * from slave where maddr = #{maddr}
     </select>
+
+    <update id="UpdateSlaver" parameterType="com.example.museum.entity.Slave">
+        update slave
+        set temperature_max = #{temperature_max},
+            temperature_min = #{temperature_min},
+            humidity_max = #{humidity_max},
+            humidity_min = #{humidity_min},
+             batterycapacity_max = #{batterycapacity_max},
+              batterycapacity_min = #{batterycapacity_min},
+               sleep = #{sleep}
+        where saddr = #{saddr}
+    </update>
 </mapper>

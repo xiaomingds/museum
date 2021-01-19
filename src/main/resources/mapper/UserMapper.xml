@@ -4,23 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.museum.mapper.UserMapper">
     <select id="get" parameterType="int" resultType="com.example.museum.entity.User">
-        select
-            userid,userdate,userAddress, username,userPassword
-        from
+        select *from
             admin
         where
             userid = #{userid};
     </select>
     <select id="Login" parameterType="String" resultType="com.example.museum.entity.User">
         select
-            userId,userDate, userAddress,userName,userPassword
+            *
         from
             admin
         where
-            userName = #{userName};
+            loginName = #{loginName};
     </select>
     <insert id="CreatUser" parameterType="com.example.museum.entity.User" >
-        insert into admin(userName,userPassword,userAddress) values (#{userName},#{userPassword},#{userAddress})
+        insert into admin(userName,userDate,loginName,userPassword,userAddress) values (#{userName},#{userDate},#{loginName},#{userPassword},#{userAddress})
     </insert>
 
     <delete id="DelUser" parameterType="int">
@@ -29,6 +27,7 @@
     <update id="UpdatelUser" parameterType="com.example.museum.entity.User">
         update admin
         set userName = #{userName},
+            loginName = #{loginName},
             userPassword = #{userPassword},
             userAddress = #{userAddress}
         where userId = #{userId}

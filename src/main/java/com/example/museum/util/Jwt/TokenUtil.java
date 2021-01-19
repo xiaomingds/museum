@@ -14,6 +14,7 @@ import java.util.Date;
 public class TokenUtil {
     private static final long EXPIRE_TIME= 15*60*1000;
     private static final String TOKEN_SECRET="token123";  //密钥盐
+    public static final String TOKEN_LOGIN_NAME = "userName";
 
 
     /**
@@ -59,6 +60,15 @@ public class TokenUtil {
         } catch (Exception e){
             return false;
         }
+
+    } public static String verityName(String token){
+            String result = "";
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            result += jwt.getClaims().get(TOKEN_LOGIN_NAME).asString();
+            return result; // success:username
+
 
     }
 

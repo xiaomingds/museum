@@ -25,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.museum.util.Jwt.TokenUtil;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import com.example.museum.util.*;
 
@@ -61,22 +64,63 @@ public class UserController {
     public ApiResult userLogin(@RequestBody Login login) {
 
         User user = userService.Login(login.getUsername());
-        System.out.println(user.getUserPassword()+" "+ login.getPassword());
+        ApiResult apiResult =null;
+
+            if( user.getUserPassword().equals(login.getPassword())){
+              String token = TokenUtil.sign(user);
+              System.out.println("验证token姓名  "+TokenUtil.verityName(token));
+                return ApiResultHandler.buildApiResult(200, "登录成功", token);
+
+            }
+            return ApiResultHandler.buildApiResult(401, "用户名或密码不正确", "");
 
 
-        if(user.getUserPassword().equals(login.getPassword())){
-            System.out.println(user.getUserPassword() + " " + user.getUserName());
-            String token = TokenUtil.sign(user);
-            return ApiResultHandler.buildApiResult(200, "登陆成功", token);
-        }
-        else
-            return ApiResultHandler.buildApiResult(500, "用户名或密码错误", "");
     }
+    @GetMapping("/getInfo")
+    @ApiOperation(value = "得到登录用户的信息")
+    public ApiResult info(@RequestParam("token") String token){
+        ApiResult res = new ApiResult();
+
+        // 验证token的合法和有效性
+        String userName = TokenUtil.verityName(token);// success:zhangsan1
+        if(userName != null) {
+            User user = userService.Login(userName);
+            res.setData(user);
+            res.setMessage("查找成功");
+            res.setCode(200);
+        }else {
+            // 否则：500
+            res.setCode(500);
+            res.setMessage("不存在此用户");
+        }
+
+        return res;
+    }
+    @PostMapping("/logout")
+    @ApiOperation(value = "退出")
+    public ApiResult logout(@RequestHeader("X-Token") String token){
+
+        ApiResult res = new ApiResult();
+        // 验证token的合法和有效性
+        String userName = TokenUtil.verityName(token);// success:zhangsan1
+        res.setMessage("退出成功");
+        res.setData("");
+        res.setCode(200);
+        return res;
+
+    }
+
     //创建user
     @PostMapping("/creatUser")
     @ApiOperation(value="创建用户")
     public ApiResult CreatUser(@RequestBody User user) {
         System.out.println(user.getUserPassword() + " " + user.getUserName()+" "+user.getUserAddress() );
+        user.setUserDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+                                        format(Calendar.getInstance().getTime())) ;
+        User user1 = userService.Login(user.getLoginName());
+        if(user1 != null){
+            return ApiResultHandler.buildApiResult(400, "用户名重复，请换个名试试","");
+        }
         int res = userService.CreatUser(user);
         if(res == 1)
         return ApiResultHandler.buildApiResult(200, "创建成功", res);

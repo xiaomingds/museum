@@ -9,7 +9,7 @@ import lombok.Data;
  **/
 @Data
 public class DeviceError {
-    Integer id;
+    String ID;
     String type;
     String TypeName;
     String Code;

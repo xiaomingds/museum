@@ -14,5 +14,6 @@ public class Master {
     String status;
     String ipaddr;
     String ostatuscode;
+    String ltime;
 
 }

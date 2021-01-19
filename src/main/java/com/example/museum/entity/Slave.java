@@ -19,4 +19,10 @@ public class Slave {
     String Sleep;
     String errorcode;
     String dtime;
+    float temperature_max;
+    float temperature_min;
+    float humidity_max;
+    float humidity_min;
+    String batterycapacity_max;
+    String batterycapacity_min;
 }
