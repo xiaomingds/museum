@@ -7,6 +7,7 @@ import com.example.museum.mapper.DeviceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,5 +32,17 @@ public class DeviceService {
     }
     public int UpdateSlave(Slave slave){
         return deviceMapper.UpdateSlaver(slave);
+    }
+    public List<Slave> WarningSlave(){
+        List<Slave> allSlave = deviceMapper.allslave();
+        List<Slave> warningSlave = new ArrayList<Slave>();
+       for (Slave s : allSlave) {
+            if(s.getTemperature() > s.getHumidity_max()||s.getTemperature() < s.getTemperature_min()
+                    || s.getHumidity() > s.getHumidity_max() || s.getHumidity() < s.getHumidity_min()
+                    || s.getBatterycapacity() < s.getBatterycapacity_min()){
+                warningSlave.add(s);
+            }
+        }
+        return warningSlave;
     }
 }

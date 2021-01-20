@@ -15,7 +15,7 @@ public class Slave {
     String status;
     float temperature;
     float humidity;
-    String batterycapacity;
+    float batterycapacity;
     String Sleep;
     String errorcode;
     String dtime;
@@ -23,6 +23,6 @@ public class Slave {
     float temperature_min;
     float humidity_max;
     float humidity_min;
-    String batterycapacity_max;
-    String batterycapacity_min;
+    float batterycapacity_max;
+    float batterycapacity_min;
 }

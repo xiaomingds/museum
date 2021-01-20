@@ -2,6 +2,7 @@ package com.example.museum.controller;
 
 import com.example.museum.entity.*;
 import com.example.museum.service.DeviceService;
+import com.example.museum.socket.SocketService;
 import com.example.museum.util.ApiResultHandler;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,7 +26,8 @@ import java.util.UUID;
 public class DeviceController {
     @Autowired
     DeviceService deviceService;
-
+    @Autowired
+    SocketService socketService;
     @GetMapping("/masterList")
     @ApiOperation(value="分页查找所有网关master")
     public ApiResult gatewaysList(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
@@ -78,5 +80,22 @@ public class DeviceController {
         if(res == 1)
         return ApiResultHandler.buildApiResult(200, "更新设备信息成功", res);
         return ApiResultHandler.buildApiResult(200, "更新设备信息失败", res);
+    }
+    @GetMapping("/warningslave")
+    @ApiOperation(value="报警设备")
+    public ApiResult warningSlave() {
+        List<Slave>slaveList  = deviceService.WarningSlave();
+        if (slaveList != null)
+            return ApiResultHandler.buildApiResult(200, "查找成功", slaveList);
+        return ApiResultHandler.buildApiResult(200, "暂无报警设备", "");
+    }
+    @PostMapping("/massage")
+    @ApiOperation(value="向设备发送信息")
+    public ApiResult sendMassage(@RequestParam String massage) {
+        String result = socketService.PostMessage(massage);
+     if(result != null)
+        return ApiResultHandler.buildApiResult(200, "发送信息成功", result);
+     return ApiResultHandler.buildApiResult(400, "更新信息失败","");
+
     }
 }
