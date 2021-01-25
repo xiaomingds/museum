@@ -4,6 +4,7 @@ import com.example.museum.entity.DeviceError;
 import com.example.museum.entity.Master;
 import com.example.museum.entity.Slave;
 import com.example.museum.mapper.DeviceMapper;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,14 @@ public class DeviceService {
     @Autowired
     private DeviceMapper deviceMapper;
 
-
+    public List<Integer> CountList(){
+        List<Integer>dataList = new ArrayList<Integer>();
+        dataList.add(deviceMapper.countUser());
+        dataList.add(deviceMapper.countMaster());
+        dataList.add(deviceMapper.countSlave());
+        dataList.add(WarningSlave().size());
+        return dataList;
+    }
     public List<Master> allmaster(){
         return deviceMapper.allmaster();
     }

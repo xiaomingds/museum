@@ -28,4 +28,13 @@
                sleep = #{sleep}
         where saddr = #{saddr}
     </update>
+    <select id="countUser"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM admin
+    </select>
+    <select id="countMaster"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM master
+    </select>
+    <select id="countSlave"  resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM slave
+    </select>
 </mapper>

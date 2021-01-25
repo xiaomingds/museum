@@ -1,7 +1,10 @@
 package com.example.museum.entity.Permissions;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class MenuTreeVO {
     Integer itemId;
     String itemName;

@@ -18,5 +18,8 @@ public interface DeviceMapper {
     List<Slave>  mslave(String maddr);
     List<DeviceError> errorList();
     int UpdateSlaver(Slave slave);
+    Integer countUser();
+    Integer countMaster();
+    Integer countSlave();
 
 }

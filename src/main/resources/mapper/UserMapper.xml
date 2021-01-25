@@ -18,7 +18,9 @@
             loginName = #{loginName};
     </select>
     <insert id="CreatUser" parameterType="com.example.museum.entity.User" >
-        insert into admin(userName,userDate,loginName,userPassword,userAddress) values (#{userName},#{userDate},#{loginName},#{userPassword},#{userAddress})
+        insert into admin(userName,userDate,loginName,userPassword,userAddress,role)
+         values
+          (#{userName},#{userDate},#{loginName},#{userPassword},#{userAddress},#{role})
     </insert>
 
     <delete id="DelUser" parameterType="int">
@@ -29,7 +31,8 @@
         set userName = #{userName},
             loginName = #{loginName},
             userPassword = #{userPassword},
-            userAddress = #{userAddress}
+            userAddress = #{userAddress},
+            role = #{role}
         where userId = #{userId}
     </update>
     <select id="allUser"   parameterType="java.util.List"  resultType="com.example.museum.entity.User">

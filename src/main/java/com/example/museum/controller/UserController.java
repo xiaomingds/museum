@@ -5,7 +5,9 @@ import com.example.museum.entity.ApiResult;
 import com.example.museum.entity.Permissions.MenuTreeVO;
 import com.example.museum.entity.User;
 import com.example.museum.entity.Login;
+import com.example.museum.entity.UserInfo;
 import com.example.museum.service.UserService;
+import com.example.museum.util.Jwt.TokenInterceptor;
 import com.example.museum.util.Jwt.TokenUtil;
 import com.example.museum.util.UploadImageUtils;
 import io.swagger.annotations.Api;
@@ -25,7 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.museum.util.Jwt.TokenUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -76,23 +80,31 @@ public class UserController {
 
 
     }
-    @GetMapping("/getInfo")
+    @GetMapping("/info")
     @ApiOperation(value = "得到登录用户的信息")
     public ApiResult info(@RequestParam("token") String token){
         ApiResult res = new ApiResult();
 
         // 验证token的合法和有效性
-        String userName = TokenUtil.verityName(token);// success:zhangsan1
-        if(userName != null) {
-            User user = userService.Login(userName);
-            res.setData(user);
+        if (token != null && TokenUtil.verify(token)) {
+            String userName = TokenUtil.verityName(token);
+            UserInfo info = new UserInfo();
+            info.setAvatar("https://seopic.699pic.com/photo/50150/8081.jpg_wh1200.jpg");
+            info.setIntroduction("管理员");
+            info.setName(userName);
+            List<String>roles = Arrays.asList("admin");
+            info.setRoles(roles);
+
+            res.setData(info);
             res.setMessage("查找成功");
             res.setCode(200);
-        }else {
-            // 否则：500
-            res.setCode(500);
-            res.setMessage("不存在此用户");
         }
+        else {
+                // 否则：500
+                res.setCode(501);
+                res.setMessage("不存在此用户");
+        }
+
 
         return res;
     }
@@ -114,7 +126,7 @@ public class UserController {
     @PostMapping("/creatUser")
     @ApiOperation(value="创建用户")
     public ApiResult CreatUser(@RequestBody User user) {
-        System.out.println(user.getUserPassword() + " " + user.getUserName()+" "+user.getUserAddress() );
+        System.out.println(user.getUserPassword() + " " + user.getUserName()+" "+user.getRole() );
         user.setUserDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
                                         format(Calendar.getInstance().getTime())) ;
         User user1 = userService.Login(user.getLoginName());
@@ -142,7 +154,7 @@ public class UserController {
     @PostMapping("/updateUser")
     @ApiOperation(value="更新用户信息")
     public ApiResult updateUser(@RequestBody User user) {
-        System.out.println(user.getUserId()+" "+user.getUserPassword() + " " + user.getUserName()+" "+user.getUserAddress() );
+        System.out.println(user.getRole());
         int res = userService.UpdatelUser(user);
         return ApiResultHandler.buildApiResult(200, "更新用户数据成功", res);
     }

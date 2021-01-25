@@ -98,4 +98,11 @@ public class DeviceController {
      return ApiResultHandler.buildApiResult(400, "更新信息失败","");
 
     }
+
+    @GetMapping("/indexList")
+    @ApiOperation(value="首页数量统计")
+    public ApiResult indexList() {
+        List<Integer>dataList  = deviceService.CountList();
+        return ApiResultHandler.buildApiResult(200, "查找成功", dataList);
+    }
 }

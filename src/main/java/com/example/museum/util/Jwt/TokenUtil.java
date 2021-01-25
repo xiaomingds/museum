@@ -12,7 +12,7 @@ import java.util.Date;
  * @date 2020/2/17 10:56
  */
 public class TokenUtil {
-    private static final long EXPIRE_TIME= 15*60*1000;
+    private static final long EXPIRE_TIME= 60*60*1000;//单位是毫秒
     private static final String TOKEN_SECRET="token123";  //密钥盐
     public static final String TOKEN_LOGIN_NAME = "userName";
 
@@ -68,7 +68,6 @@ public class TokenUtil {
             DecodedJWT jwt = verifier.verify(token);
             result += jwt.getClaims().get(TOKEN_LOGIN_NAME).asString();
             return result; // success:username
-
 
     }
 

@@ -13,4 +13,5 @@ public class User {
     String userName;
     String userAddress;
     String userPassword;
+    String role;
 }
