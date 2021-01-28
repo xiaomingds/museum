@@ -4,6 +4,8 @@ import com.example.museum.entity.DeviceError;
 import com.example.museum.entity.Master;
 import com.example.museum.entity.Slave;
 import com.example.museum.mapper.DeviceMapper;
+import com.example.museum.mapper.MasterMapper;
+import com.example.museum.socket.SocketService;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +17,19 @@ import java.util.List;
 public class DeviceService {
     @Autowired
     private DeviceMapper deviceMapper;
-
+    @Autowired
+    private SocketService socketService;
+    @Autowired
+    private MasterMapper masterMapper;
     public List<Integer> CountList(){
         List<Integer>dataList = new ArrayList<Integer>();
         dataList.add(deviceMapper.countUser());
-        dataList.add(deviceMapper.countMaster());
+        dataList.add(masterMapper.countMaster());
         dataList.add(deviceMapper.countSlave());
         dataList.add(WarningSlave().size());
         return dataList;
     }
-    public List<Master> allmaster(){
-        return deviceMapper.allmaster();
-    }
+
 
     public List<Slave> allslave(){
         return deviceMapper.allslave();
@@ -53,4 +56,5 @@ public class DeviceService {
         }
         return warningSlave;
     }
+
 }

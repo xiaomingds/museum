@@ -18,7 +18,7 @@ public interface  UserMapper {
     int DelUser(int userId);
     int UpdatelUser(User user);
     List<User> allUser();
-
+    User FindUser(String userName);
     //shiro
     List<MenuItem> getMenu(String loginName);
 }

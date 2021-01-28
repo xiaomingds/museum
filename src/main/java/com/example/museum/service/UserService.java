@@ -49,5 +49,7 @@ public class UserService {
         }
         return  TreeUtil.toTree(menuTreeVOS);
     }
-
+    public User FindUSer(String userName){
+        return userMapper.FindUser(userName);
+    }
 }

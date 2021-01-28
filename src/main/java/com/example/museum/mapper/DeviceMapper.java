@@ -13,13 +13,12 @@ import java.util.List;
 @Mapper
 @Component
 public interface DeviceMapper {
-    List<Master> allmaster();
+
     List<Slave> allslave();
     List<Slave>  mslave(String maddr);
     List<DeviceError> errorList();
     int UpdateSlaver(Slave slave);
     Integer countUser();
-    Integer countMaster();
     Integer countSlave();
 
 }

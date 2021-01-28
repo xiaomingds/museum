@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,81 +30,95 @@ public class DeviceController {
     DeviceService deviceService;
     @Autowired
     SocketService socketService;
-    @GetMapping("/masterList")
-    @ApiOperation(value="分页查找所有网关master")
-    public ApiResult gatewaysList(@RequestParam(defaultValue = "1") int page, @RequestParam int size) {
-        PageHelper.startPage(page,size);//size为每页显示的个数
 
-        List<Master>allmaster = deviceService.allmaster();
-        PageInfo pageInfo = new PageInfo(allmaster,5);//显示前后页数
-
-        return ApiResultHandler.buildApiResult(200, "查找成功", pageInfo);
-    }
-
-
-    @GetMapping("/master")
-    @ApiOperation(value="查找所有网关不分页")
-    public ApiResult master() {
-        List<Master>allmaster = deviceService.allmaster();
-
-        return ApiResultHandler.buildApiResult(200, "查找成功", allmaster);
-    }
 
     @GetMapping("/errorList")
-    @ApiOperation(value="故障字典")
+    @ApiOperation(value = "故障字典")
     public ApiResult errorList() {
-        List<DeviceError>deviceErrors  = deviceService.errorlist();
+        List<DeviceError> deviceErrors = deviceService.errorlist();
         return ApiResultHandler.buildApiResult(200, "查找成功", deviceErrors);
     }
 
     @GetMapping("/slaveList")
-    @ApiOperation(value="查找所有网关下所有设备")
+    @ApiOperation(value = "查找所有网关下所有设备")
     public ApiResult slaveList() {
-        List<Slave>slaveList  = deviceService.allslave();
+        List<Slave> slaveList = deviceService.allslave();
         if (slaveList != null)
-        return ApiResultHandler.buildApiResult(200, "查找成功", slaveList);
+            return ApiResultHandler.buildApiResult(200, "查找成功", slaveList);
         return ApiResultHandler.buildApiResult(400, "无网关设备", "");
     }
+
     @GetMapping("/mslaveList")
-    @ApiOperation(value="查找对应网关下的设备")
+    @ApiOperation(value = "查找对应网关下的设备")
     public ApiResult mslaveList(@RequestParam String maddr) {
-        System.out.println("后台收到的网关地址 "+ maddr);
-        List<Slave>slaveList  = deviceService.mslave(maddr);
+        System.out.println("后台收到的网关地址 " + maddr);
+        List<Slave> slaveList = deviceService.mslave(maddr);
         if (slaveList != null)
             return ApiResultHandler.buildApiResult(200, "查找成功", slaveList);
         return ApiResultHandler.buildApiResult(400, "此网关下暂无设备", "");
     }
+
     @PostMapping("/editDevice")
-    @ApiOperation(value="更新设备报警信息")
+    @ApiOperation(value = "更新设备报警信息")
     public ApiResult editDevice(@RequestBody Slave slave) {
-        System.out.println(slave.getTemperature_max()+" "+slave.getHumidity_max() + " " + slave.getSleep());
-        int res =deviceService.UpdateSlave(slave);
-        if(res == 1)
-        return ApiResultHandler.buildApiResult(200, "更新设备信息成功", res);
-        return ApiResultHandler.buildApiResult(200, "更新设备信息失败", res);
+        int res = deviceService.UpdateSlave(slave);
+
+        String message = slave.getMaddr() + slave.getSaddr() + slave.getStatus() + slave.getTemperature()
+                + slave.getHumidity() + slave.getBatterycapacity_min() + slave.getSleep()
+                + new SimpleDateFormat("yyyy-MM-ddHH:mm:ss").
+                format(Calendar.getInstance().getTime());
+
+        return ApiResultHandler.buildApiResult(501, "硬件设备连接不上", res);
     }
+
     @GetMapping("/warningslave")
-    @ApiOperation(value="报警设备")
+    @ApiOperation(value = "报警设备")
     public ApiResult warningSlave() {
-        List<Slave>slaveList  = deviceService.WarningSlave();
+        List<Slave> slaveList = deviceService.WarningSlave();
         if (slaveList != null)
             return ApiResultHandler.buildApiResult(200, "查找成功", slaveList);
         return ApiResultHandler.buildApiResult(200, "暂无报警设备", "");
     }
-    @PostMapping("/massage")
-    @ApiOperation(value="向设备发送信息")
-    public ApiResult sendMassage(@RequestParam String massage) {
-        String result = socketService.PostMessage(massage);
-     if(result != null)
-        return ApiResultHandler.buildApiResult(200, "发送信息成功", result);
-     return ApiResultHandler.buildApiResult(400, "更新信息失败","");
-
-    }
 
     @GetMapping("/indexList")
-    @ApiOperation(value="首页数量统计")
+    @ApiOperation(value = "首页数量统计")
     public ApiResult indexList() {
-        List<Integer>dataList  = deviceService.CountList();
+        List<Integer> dataList = deviceService.CountList();
         return ApiResultHandler.buildApiResult(200, "查找成功", dataList);
     }
+
+
+    @PostMapping("/massage")
+    @ApiOperation(value = "向设备发送信息")
+    public ApiResult sendMassage(@RequestParam String massage) {
+       socketService.PostMessage(massage);
+        return ApiResultHandler.buildApiResult(501, "硬件设备连接不上", "");
+    }
+
+    @GetMapping("/switch")
+    @ApiOperation(value = "门开关")
+    public ApiResult doorMaster(@RequestParam String saddr,@RequestParam boolean sw) {
+        String message = null;
+        if(sw){
+            message = "AB" + saddr+"01" + "UCD";
+        }
+        else
+            message = "AB" + saddr+"00" + "UCD";
+
+        System.out.println("发送网关信息 "+ message);
+        // socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "重置成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/light")
+    @ApiOperation(value = "灯亮度")
+    public ApiResult lightMaster(@RequestParam String saddr,@RequestParam float lamp) {
+        String message =  "AB" + saddr+ lamp + "ECD";
+
+        System.out.println("发送网关信息 "+ message);
+        // socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "重置成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+
 }

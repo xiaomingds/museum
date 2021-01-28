@@ -17,6 +17,14 @@
         where
             loginName = #{loginName};
     </select>
+    <select id="FindUser" parameterType="String" resultType="com.example.museum.entity.User">
+        select
+            *
+        from
+            admin
+        where
+            userName = #{userName};
+    </select>
     <insert id="CreatUser" parameterType="com.example.museum.entity.User" >
         insert into admin(userName,userDate,loginName,userPassword,userAddress,role)
          values

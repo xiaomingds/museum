@@ -30,7 +30,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             if(token != null){
                 boolean result = TokenUtil.verify(token);
                 if(result){
-                    System.out.println("通过拦截器");
                     return true;
                 }
             }

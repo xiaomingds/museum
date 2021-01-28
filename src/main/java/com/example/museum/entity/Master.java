@@ -15,5 +15,5 @@ public class Master {
     String ipaddr;
     String ostatuscode;
     String ltime;
-
+    Boolean sw;
 }

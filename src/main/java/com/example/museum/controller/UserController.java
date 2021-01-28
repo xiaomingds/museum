@@ -61,25 +61,18 @@ public class UserController {
         return ApiResultHandler.buildApiResult(200, "查找成功", menu);
     }
 
-
-
     @PostMapping("/login")
     @ApiOperation(value="用户登录")
     public ApiResult userLogin(@RequestBody Login login) {
-
         User user = userService.Login(login.getUsername());
-        ApiResult apiResult =null;
-
             if( user.getUserPassword().equals(login.getPassword())){
               String token = TokenUtil.sign(user);
-              System.out.println("验证token姓名  "+TokenUtil.verityName(token));
                 return ApiResultHandler.buildApiResult(200, "登录成功", token);
 
             }
-            return ApiResultHandler.buildApiResult(401, "用户名或密码不正确", "");
-
-
+            return ApiResultHandler.buildApiResult(500, "用户名或密码不正确", "");
     }
+
     @GetMapping("/info")
     @ApiOperation(value = "得到登录用户的信息")
     public ApiResult info(@RequestParam("token") String token){
@@ -88,11 +81,12 @@ public class UserController {
         // 验证token的合法和有效性
         if (token != null && TokenUtil.verify(token)) {
             String userName = TokenUtil.verityName(token);
+            User user = userService.FindUSer(userName);
             UserInfo info = new UserInfo();
             info.setAvatar("https://seopic.699pic.com/photo/50150/8081.jpg_wh1200.jpg");
             info.setIntroduction("管理员");
             info.setName(userName);
-            List<String>roles = Arrays.asList("admin");
+            List<String>roles = Arrays.asList(user.getRole());
             info.setRoles(roles);
 
             res.setData(info);
@@ -177,8 +171,10 @@ public class UserController {
     @GetMapping("/userList")
     @ApiOperation(value="无分页用户查找")
     public ApiResult  userList() {
+
         List<User>allUser = userService.allUser();
         return ApiResultHandler.buildApiResult(200, "查找成功", allUser);
+
     }
 
     @ApiImplicitParam(name = "file", value = "文件流", dataType = "__file", paramType = "form")
@@ -212,5 +208,6 @@ public class UserController {
         }
         return msg;
     }
+
 
 }

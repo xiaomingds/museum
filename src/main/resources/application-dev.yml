@@ -32,31 +32,4 @@ logging:
   level:
     com.example.museum.mapper: debug #打印sql
 
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#
-#  endpoint:
-#    shutdown:
-#      enabled: true
-#netty:
-#  websocket:
-#    # Websocket服务端口
-#    port: 9035
-#    # 绑定的网卡
-#    ip: 10.129.0.110
-#    # 消息帧最大体积
-#    max-frame-size: 10240
-#    # URI路径
-#    path: /channel
 
-#mqtt:
-#  username: admin
-#    password: public
-#    host-url: tcp://123.123.123.123:1883		# 你自己服务器的地址和端口，这个需要改
-#    clientID: test							# 这个改不改随意，但不同的客户端肯定不能一样
-#    default-topic: test						# 默认主题
-#    timeout: 100
-#    keepalive: 100
