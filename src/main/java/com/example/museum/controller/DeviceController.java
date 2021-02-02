@@ -97,13 +97,13 @@ public class DeviceController {
 
     @GetMapping("/switch")
     @ApiOperation(value = "门开关")
-    public ApiResult doorMaster(@RequestParam String saddr,@RequestParam boolean sw) {
+    public ApiResult doorDevice(@RequestParam String maddr,@RequestParam String saddr,@RequestParam boolean sw) {
         String message = null;
         if(sw){
-            message = "AB" + saddr+"01" + "UCD";
+            message = maddr+ "AB" + saddr+"01" + "UCD";
         }
         else
-            message = "AB" + saddr+"00" + "UCD";
+            message =maddr+  "AB" + saddr+"00" + "UCD";
 
         System.out.println("发送网关信息 "+ message);
         // socketService.PostMessage(message);
@@ -112,12 +112,22 @@ public class DeviceController {
     }
     @GetMapping("/light")
     @ApiOperation(value = "灯亮度")
-    public ApiResult lightMaster(@RequestParam String saddr,@RequestParam float lamp) {
-        String message =  "AB" + saddr+ lamp + "ECD";
+    public ApiResult lightDevice(@RequestParam String maddr,@RequestParam String saddr,@RequestParam int lamp) {
+        String message = maddr+ "AB" + saddr+ lamp + "ECD";
 
         System.out.println("发送网关信息 "+ message);
         // socketService.PostMessage(message);
-        return ApiResultHandler.buildApiResult(200, "重置成功", "");
+        return ApiResultHandler.buildApiResult(200, "灯亮度调节成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/sleep")
+    @ApiOperation(value = "设备休眠时间")
+    public ApiResult sleepDevice(@RequestParam String  maddr,@RequestParam String saddr,@RequestParam String sleep) {
+        String message =  maddr + "AB" + saddr+ sleep + "ZCD";
+
+        System.out.println("发送网关信息 "+ message);
+        // socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "调节休眠时间成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
 

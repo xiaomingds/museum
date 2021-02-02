@@ -96,10 +96,8 @@ public class UserController {
         else {
                 // 否则：500
                 res.setCode(501);
-                res.setMessage("不存在此用户");
+                res.setMessage("请重新登录");
         }
-
-
         return res;
     }
     @PostMapping("/logout")
