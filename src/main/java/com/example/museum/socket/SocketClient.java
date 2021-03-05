@@ -15,8 +15,8 @@ import java.net.Socket;
 public class SocketClient {
     public static void main(String args[]) throws Exception {
         // 要连接的服务端IP地址和端口
-        String host = "0.129.0.110";//"10.129.0.110"
-        int port = 9035;
+        String host = "10.129.0.110";//"10.129.0.110"
+        int port = 8888;
         // 与服务端建立连接
         Socket socket = new Socket(host, port);
         // 建立连接后获得输出流

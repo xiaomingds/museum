@@ -53,9 +53,9 @@ public class MasterController {
     @GetMapping("/reset")
     @ApiOperation(value = "重置网关")
     public ApiResult restMaster(@RequestParam String maddr) {
-        String message = maddr+"CL";
+        String message = "-------------------\nHTTP1\nMaster:"+maddr+'\n'+"SEND:CL\n-------------------";
         System.out.println("重置网关信息 "+ message);
-       // socketService.PostMessage(message);
+        socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "重置成功", "");
       //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
@@ -64,10 +64,10 @@ public class MasterController {
     public ApiResult switchMaster(@RequestParam String maddr,@RequestParam boolean sw) {
         String message = null;
         if(sw){
-            message = "AB" + maddr+"01" + "RCD";
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"01RCD\n-------------------";
         }
         else
-            message = "AB" + maddr+"00" + "RCD";
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"00RCD\n-------------------";
 
         System.out.println("发送网关信息 "+ message);
         // socketService.PostMessage(message);
