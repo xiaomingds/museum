@@ -13,7 +13,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
+
+;
 
 /**
  * @ClassName MasterController
@@ -53,8 +57,9 @@ public class MasterController {
     @GetMapping("/reset")
     @ApiOperation(value = "重置网关")
     public ApiResult restMaster(@RequestParam String maddr) {
-        String message = "-------------------\nHTTP1\nMaster:"+maddr+'\n'+"SEND:CL\n-------------------";
-        System.out.println("重置网关信息 "+ message);
+       //10.23.129.231
+        String message = "-------------------\nHTTP1\nMaster:"+maddr+'\n'+"SEND:CL\n-------------------\n";
+        System.out.println("重置网关信息 \n"+ message);
         socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "重置成功", "");
       //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
@@ -64,14 +69,33 @@ public class MasterController {
     public ApiResult switchMaster(@RequestParam String maddr,@RequestParam boolean sw) {
         String message = null;
         if(sw){
-            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"01RCD\n-------------------";
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"01RCD\n-------------------\n";
         }
         else
-            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"00RCD\n-------------------";
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+maddr+"00RCD\n-------------------\n";
 
         System.out.println("发送网关信息 "+ message);
-        // socketService.PostMessage(message);
+        socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "重置成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
+
+    @GetMapping("/retime")
+    @ApiOperation(value = "调节时间")
+    public ApiResult MasterTime(@RequestParam String maddr) {
+        //10.23.129.231
+        String time;
+        Date date=new Date();
+
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyyMMddHHmmss");
+        time=formatter.format(date);
+        String nowTime  =   time.substring(2);
+        String message = "-------------------\nHTTP2\nMaster:"+maddr+'\n'+"SEND:ABAA" + nowTime + "CD\n-------------------\n";
+        System.out.println("调节网关时间 \n"+ message);
+
+       // socketService.PostMessage(message);
+
+        return ApiResultHandler.buildApiResult(200, "调节时间", "");
+    }
+
 }
