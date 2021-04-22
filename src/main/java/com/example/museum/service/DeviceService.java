@@ -3,6 +3,9 @@ package com.example.museum.service;
 import com.example.museum.entity.DeviceError;
 import com.example.museum.entity.Master;
 import com.example.museum.entity.Slave;
+import com.example.museum.entity.device.Door;
+import com.example.museum.entity.device.Lamp;
+import com.example.museum.entity.device.Relay;
 import com.example.museum.mapper.DeviceMapper;
 import com.example.museum.mapper.MasterMapper;
 import com.example.museum.socket.SocketService;
@@ -56,5 +59,13 @@ public class DeviceService {
         }
         return warningSlave;
     }
-
+    public List<Door>  Doors(String mid){
+        return deviceMapper.Doors(mid);
+    }
+    public  List<Lamp>  Lamps(String mid){
+        return deviceMapper.Lamps(mid);
+    }
+    public List<Relay>  relays(String mid){
+        return  deviceMapper.relays(mid);
+    }
 }

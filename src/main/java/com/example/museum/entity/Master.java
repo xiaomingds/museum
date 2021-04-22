@@ -9,7 +9,7 @@ import lombok.Data;
  **/
 @Data
 public class Master {
-    String id;
+    String mid;
     String maddr;
     String status;
     String ipaddr;
