@@ -12,4 +12,5 @@ public class Lamp {
     String rid;
     String mid;
     Integer bright;
+    String lamp_address;
 }

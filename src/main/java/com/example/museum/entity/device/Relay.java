@@ -11,5 +11,6 @@ import lombok.Data;
 public class Relay {
     String yid;
     String mid;
-    Boolean sw;
+    Integer sw;
+    String relay_address;
 }

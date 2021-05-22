@@ -1,6 +1,9 @@
 package com.example.museum.controller;
 
 import com.example.museum.entity.*;
+import com.example.museum.entity.device.Door;
+import com.example.museum.entity.device.Lamp;
+import com.example.museum.entity.device.Relay;
 import com.example.museum.service.DeviceService;
 import com.example.museum.socket.SocketService;
 import com.example.museum.util.ApiResultHandler;
@@ -97,39 +100,86 @@ public class DeviceController {
 
     @GetMapping("/switch")
     @ApiOperation(value = "门开关")
-    public ApiResult doorDevice(@RequestParam String maddr,@RequestParam String saddr,@RequestParam boolean sw) {
+    public ApiResult doorDevice(@RequestParam String maddr,@RequestParam String door_address,@RequestParam boolean sw) {
+        System.out.println("门的地址 "+ door_address);
+
         String message = null;
         if(sw){
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"01UCD\n-------------------";
+            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"01UCD\n-------------------\n";
         }
         else
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"01DCD\n-------------------";
+            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"01DCD\n-------------------\n";
         System.out.println("发送网关信息 "+ message);
-        // socketService.PostMessage(message);
+         socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "门开关成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
+
     @GetMapping("/light")
     @ApiOperation(value = "灯亮度")
-    public ApiResult lightDevice(@RequestParam String maddr,@RequestParam String saddr,@RequestParam int lamp) {
-       String message = "-------------------\nHTTP5\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ lamp + "ECD\n-------------------";
+    public ApiResult lightDevice(@RequestParam String maddr,@RequestParam String lamp_address,@RequestParam int lamp) {
+        String ll="";
+        if(lamp >= 0 && lamp <=9){
+            ll="0";
+            ll +=lamp;
+        }
+        else if(lamp == 100)
+            ll ="99";
+        else
+            ll += lamp;
+        String message = "-------------------\nHTTP5\nMaster:"+maddr+'\n'+"SEND:"+"AB"+lamp_address+ ll + "ECD\n-------------------\n";
 
         System.out.println("发送网关信息 "+ message);
-        // socketService.PostMessage(message);
+        socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "灯亮度调节成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
+
     @GetMapping("/sleep")
     @ApiOperation(value = "设备休眠时间")
     public ApiResult sleepDevice(@RequestParam String  maddr,@RequestParam String saddr,@RequestParam String sleep) {
-        String message = "-------------------\nHTTP5\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleep + "SCD\n-------------------";
+        String message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleep + "SCD\n-------------------\n";
 
         System.out.println("发送网关信息 "+ message);
-        // socketService.PostMessage(message);
+        socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "调节休眠时间成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
 
 
+    @GetMapping("/otherswitch")
+    @ApiOperation(value = "继电器开关")
+    public ApiResult switchMaster(@RequestParam String maddr, @RequestParam String relay_address, @RequestParam boolean sw) {
+        String message = null;
+        if (sw) {
+            message = "-------------------\nHTTP6\nMaster:" + maddr + '\n' + "SEND:" + "AB" + relay_address + "01RCD\n-------------------\n";
+        } else
+            message = "-------------------\nHTTP6\nMaster:" + maddr + '\n' + "SEND:" + "AB" + relay_address + "00RCD\n-------------------\n";
 
+        System.out.println("发送网关信息 " + message);
+        socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "重置成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+
+    @GetMapping("/findswitch")
+    @ApiOperation(value = "具体某一个开关")
+    public ApiResult findSwich(@RequestParam  String mid, @RequestParam String door_address){
+        Door door = deviceService.findDoor(mid,door_address);
+        return ApiResultHandler.buildApiResult(200, "查找成功", door);
+
+    }
+
+    @GetMapping("/findlamp")
+    @ApiOperation(value = "具体某一个灯")
+    public ApiResult findLamp(@RequestParam  String mid, @RequestParam String lamp_address){
+        Lamp lamp = deviceService.findLamp(mid,lamp_address);
+        return ApiResultHandler.buildApiResult(200, "查找成功", lamp);
+    }
+    @GetMapping("/findrelay")
+    @ApiOperation(value = "具体某一个继电器")
+    public ApiResult findRelay(@RequestParam  String mid, @RequestParam String relay_address){
+        Relay relay  = deviceService.findRelay(mid,relay_address);
+        return ApiResultHandler.buildApiResult(200, "查找成功", relay);
+    }
 }

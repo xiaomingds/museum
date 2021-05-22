@@ -4,16 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.museum.mapper.DeviceMapper">
 
-    <select id="allmaster"   parameterType="java.util.List"  resultType="com.example.museum.entity.Master">
+    <select id="allmaster" parameterType="java.util.List" resultType="com.example.museum.entity.Master">
         select * from master
     </select>
-    <select id="errorList"   parameterType="java.util.List"  resultType="com.example.museum.entity.DeviceError">
+    <select id="errorList" parameterType="java.util.List" resultType="com.example.museum.entity.DeviceError">
         select * from Dict
     </select>
-    <select id="allslave"   parameterType="java.util.List"  resultType="com.example.museum.entity.Slave">
+    <select id="allslave" parameterType="java.util.List" resultType="com.example.museum.entity.Slave">
         select * from slave
     </select>
-    <select id="mslave"   parameterType="java.util.List"  resultType="com.example.museum.entity.Slave">
+    <select id="mslave" parameterType="java.util.List" resultType="com.example.museum.entity.Slave">
         select * from slave where maddr = #{maddr}
     </select>
 
@@ -28,23 +28,43 @@
                sleep = #{sleep}
         where saddr = #{saddr}
     </update>
-    <select id="countUser"  resultType="java.lang.Integer">
+    <select id="countUser" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM admin
     </select>
-    <select id="countMaster"  resultType="java.lang.Integer">
+    <select id="countMaster" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM master
     </select>
-    <select id="countSlave"  resultType="java.lang.Integer">
+    <select id="countSlave" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM slave
     </select>
 
-    <select id="Doors"   parameterType="java.util.List"  resultType="com.example.museum.entity.device.Door">
+    <select id="Doors" parameterType="java.util.List" resultType="com.example.museum.entity.device.Door">
         select * from door where mid = #{mid}
     </select>
-    <select id="Lamps"   parameterType="java.util.List"  resultType="com.example.museum.entity.device.Lamp">
+    <select id="Lamps" parameterType="java.util.List" resultType="com.example.museum.entity.device.Lamp">
         select * from lamp where mid = #{mid}
     </select>
-    <select id="relays"   parameterType="java.util.List"  resultType="com.example.museum.entity.device.Relay">
-        select * from door where mid = #{mid}
+    <select id="relays" parameterType="java.util.List" resultType="com.example.museum.entity.device.Relay">
+        select * from relay where mid = #{mid}
     </select>
+
+    <select id="findDoor" resultType="com.example.museum.entity.device.Door">
+        select *from
+            door
+        where
+            mid = #{mid} And door_address =#{door_address};
+    </select>
+    <select id="findLamp" resultType="com.example.museum.entity.device.Lamp">
+        select *from
+            lamp
+        where
+            mid = #{mid} And lamp_address =#{lamp_address};
+    </select>
+    <select id="findRelay" resultType="com.example.museum.entity.device.Relay">
+        select *from
+            relay
+        where
+            mid = #{mid} And relay_address =#{relay_address};
+    </select>
+
 </mapper>

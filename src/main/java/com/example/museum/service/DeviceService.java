@@ -68,4 +68,15 @@ public class DeviceService {
     public List<Relay>  relays(String mid){
         return  deviceMapper.relays(mid);
     }
+
+
+    public Door findDoor(String mid, String door_address){
+        return deviceMapper.findDoor(mid,door_address);
+    }
+    public Lamp findLamp(String mid, String lamp_address){
+        return deviceMapper.findLamp(mid,lamp_address);
+    }
+    public Relay findRelay(String mid, String Relay_address){
+        return deviceMapper.findRelay(mid,Relay_address);
+    }
 }

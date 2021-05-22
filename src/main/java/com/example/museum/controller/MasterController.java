@@ -73,20 +73,7 @@ public class MasterController {
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
 
-    @GetMapping("/switch")
-    @ApiOperation(value = "网关开关")
-    public ApiResult switchMaster(@RequestParam String maddr, @RequestParam boolean sw) {
-        String message = null;
-        if (sw) {
-            message = "-------------------\nHTTP6\nMaster:" + maddr + '\n' + "SEND:" + "AB" + maddr + "01RCD\n-------------------\n";
-        } else
-            message = "-------------------\nHTTP6\nMaster:" + maddr + '\n' + "SEND:" + "AB" + maddr + "00RCD\n-------------------\n";
 
-        System.out.println("发送网关信息 " + message);
-        socketService.PostMessage(message);
-        return ApiResultHandler.buildApiResult(200, "重置成功", "");
-        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
-    }
 
     @GetMapping("/retime")
     @ApiOperation(value = "调节时间")
@@ -101,7 +88,7 @@ public class MasterController {
         String message = "-------------------\nHTTP2\nMaster:" + maddr + '\n' + "SEND:ABAA" + nowTime + "CD\n-------------------\n";
         System.out.println("调节网关时间 \n" + message);
 
-        // socketService.PostMessage(message);
+        socketService.PostMessage(message);
 
         return ApiResultHandler.buildApiResult(200, "调节时间", "");
     }
@@ -115,9 +102,9 @@ public class MasterController {
             ListDevice deviceList = new ListDevice();
 
             List<Slave> slaves= deviceService.mslave(ma.getMaddr());
-            List<Door>doors = deviceService.Doors(ma.getMid());
-            List<Lamp>lamps = deviceService.Lamps(ma.getMid());
-            List<Relay>relays = deviceService.relays(ma.getMid());
+            List<Door>doors = deviceService.Doors(ma.getMaddr());
+            List<Lamp>lamps = deviceService.Lamps(ma.getMaddr());
+            List<Relay>relays = deviceService.relays(ma.getMaddr());
 
             deviceList.setMaddr(ma.getMaddr());
             deviceList.setSlaveList(slaves);

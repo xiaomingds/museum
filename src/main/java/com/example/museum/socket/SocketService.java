@@ -21,7 +21,7 @@ public class SocketService {
         try {
 
             // 要连接的服务端IP地址和端口
-            String host = "10.129.0.110";//"10.129.0.110"
+            String host = "127.0.0.1";//"10.129.0.110"
             int port = 8888;
             // 与服务端建立连接
             Socket socket = new Socket(host, port);

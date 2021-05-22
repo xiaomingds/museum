@@ -26,5 +26,9 @@ public interface DeviceMapper {
     List<Door>  Doors(String mid);
     List<Lamp>  Lamps(String mid);
     List<Relay>  relays(String mid);
+    Door findDoor(String mid, String door_address);
+    Lamp findLamp(String mid, String lamp_address);
+    Relay findRelay(String mid, String relay_address);
+
 
 }

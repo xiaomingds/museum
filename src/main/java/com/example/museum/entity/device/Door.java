@@ -12,6 +12,6 @@ public class Door {
     String did;
     String mid;
     Boolean sw;
-
+    String door_address;
 
 }
