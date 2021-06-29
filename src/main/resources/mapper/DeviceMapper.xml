@@ -66,5 +66,10 @@
         where
             mid = #{mid} And relay_address =#{relay_address};
     </select>
-
+    <select id="findDoorWaring" resultType="java.lang.Boolean">
+        select warning from
+            Door
+        where
+           door_address =#{door_address};
+    </select>
 </mapper>

@@ -14,5 +14,5 @@ import java.util.List;
 @Mapper
 @Component
 public interface EcharsMapper {
-    List<Running>GetLine(String maddr,String saddr);
+    List<Running>GetLine(String maddr,String saddr,String begindate,String enddate);
 }

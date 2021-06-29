@@ -12,5 +12,7 @@
     <select id="countMaster"  resultType="java.lang.Integer">
         SELECT COUNT(*) FROM master
     </select>
-
+    <select id="findMaster"  resultType="com.example.museum.entity.Master">
+        SELECT * FROM master where maddr = #{maddr}
+    </select>
 </mapper>

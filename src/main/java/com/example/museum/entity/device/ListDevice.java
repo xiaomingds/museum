@@ -14,6 +14,7 @@ import java.util.List;
 public class ListDevice {
 
     String maddr;
+    Boolean warning;
     List<Slave>slaveList;
     List<Door>doorList;
     List<Lamp>lampList;

@@ -79,4 +79,9 @@ public class DeviceService {
     public Relay findRelay(String mid, String Relay_address){
         return deviceMapper.findRelay(mid,Relay_address);
     }
+
+    public Boolean findDoorWaring(String door_address){
+        return  deviceMapper.findDoorWaring(door_address);
+    }
+
 }

@@ -22,5 +22,8 @@ public class MasterService {
     public List<Master> allmaster(){
         return masterMapper.allmaster();
     }
+    public Master findMaster(String maddr){
+        return  masterMapper.findMaster(maddr);
+    }
 
 }

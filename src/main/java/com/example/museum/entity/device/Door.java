@@ -13,5 +13,6 @@ public class Door {
     String mid;
     Boolean sw;
     String door_address;
+    Boolean warning;
 
 }

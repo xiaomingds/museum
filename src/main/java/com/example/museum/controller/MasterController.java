@@ -102,10 +102,16 @@ public class MasterController {
             ListDevice deviceList = new ListDevice();
 
             List<Slave> slaves= deviceService.mslave(ma.getMaddr());
+            for(Slave sa : slaves){
+                sa.setDoor_address_warning(deviceService.findDoorWaring(sa.getDoor_address())) ;
+
+                if (sa.getErrorcode().equals("01"))
+                    sa.setMove_warning(true);
+            }
             List<Door>doors = deviceService.Doors(ma.getMaddr());
             List<Lamp>lamps = deviceService.Lamps(ma.getMaddr());
             List<Relay>relays = deviceService.relays(ma.getMaddr());
-
+            deviceList.setWarning(ma.getWarning());
             deviceList.setMaddr(ma.getMaddr());
             deviceList.setSlaveList(slaves);
             deviceList.setDoorList(doors);
@@ -116,5 +122,15 @@ public class MasterController {
 
         }
         return ApiResultHandler.buildApiResult(200, "查找成功", listDevices);
+    }
+
+
+    @GetMapping("/getmaster")
+    @ApiOperation(value = "根据maddr查找某一个网关")
+    public ApiResult findMaster(@RequestParam String maddr) {
+
+        Master master = masterService.findMaster(maddr);
+        return ApiResultHandler.buildApiResult(200, "查找成功", master);
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
 }

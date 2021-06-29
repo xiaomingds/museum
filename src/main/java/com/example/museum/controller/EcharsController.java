@@ -34,8 +34,15 @@ public class EcharsController {
 
     @GetMapping("/line")
     @ApiOperation(value = "温湿度曲线")
-    public ApiResult lineList(@RequestParam(defaultValue = "01") String maddr, @RequestParam(defaultValue = "01") String saddr) {
-        List<Running> runnings = echarsMapper.GetLine(maddr,saddr);
+    public ApiResult lineList(@RequestParam(defaultValue = "01") String maddr, @RequestParam(defaultValue = "01") String saddr,
+                              @RequestParam(required = false) String dateval) {
+        String [] strArray = dateval.split(" ");
+
+
+        String begindate =strArray[0]+strArray[1];
+        String enddate = strArray[2]+strArray[3];
+
+        List<Running> runnings = echarsMapper.GetLine(maddr,saddr,begindate,enddate);
         List<String>listT =new ArrayList<String>();
         List<String>listH = new ArrayList<String>();
         List<String>listTime = new ArrayList<String>();

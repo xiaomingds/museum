@@ -15,5 +15,5 @@ import java.util.List;
 public interface MasterMapper {
     List<Master> allmaster();
     Integer countMaster();
-
+    Master findMaster(String maddr);
 }

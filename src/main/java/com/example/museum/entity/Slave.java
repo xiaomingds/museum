@@ -25,6 +25,8 @@ public class Slave {
     float humidity_min;
     float batterycapacity_max;
     float batterycapacity_min;
-    Boolean door;
-    float lamp;
+    String door_address;
+    boolean door_address_warning;
+    boolean move_warning;
+
 }

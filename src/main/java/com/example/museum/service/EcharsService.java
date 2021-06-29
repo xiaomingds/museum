@@ -17,7 +17,7 @@ import java.util.List;
 public class EcharsService {
     @Autowired
     private EcharsMapper echarsMapper;
-    public List<Running>GetLine(String maddr,String saddr){
-        return echarsMapper.GetLine(maddr,saddr);
+    public List<Running>GetLine(String maddr,String saddr,String begindate,String enddate){
+        return echarsMapper.GetLine(maddr,saddr,begindate,enddate);
     }
 }

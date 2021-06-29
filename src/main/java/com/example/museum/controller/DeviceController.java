@@ -182,4 +182,29 @@ public class DeviceController {
         Relay relay  = deviceService.findRelay(mid,relay_address);
         return ApiResultHandler.buildApiResult(200, "查找成功", relay);
     }
+
+    @GetMapping("/cleardoor")
+    @ApiOperation(value = "解除门报警")
+    public ApiResult clearDoor(@RequestParam String maddr,@RequestParam String door_address) {
+        System.out.println("门的地址 "+ door_address);
+
+        String message = null;
+        message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"00TCD\n-------------------\n";
+        System.out.println("发送网关信息 "+ message);
+        socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "解除门报警成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/clearmovie")
+    @ApiOperation(value = "解除移动报警")
+    public ApiResult clearMovie(@RequestParam String maddr) {
+
+        String message = null;
+        message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+"00TCD\n-------------------\n";
+        System.out.println("发送网关信息 "+ message);
+        socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "解除移动报警成功", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+
 }

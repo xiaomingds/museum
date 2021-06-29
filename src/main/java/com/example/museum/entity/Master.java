@@ -16,4 +16,6 @@ public class Master {
     String ostatuscode;
     String ltime;
     Boolean sw;
+    Boolean warning;
+
 }
