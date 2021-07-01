@@ -83,5 +83,7 @@ public class DeviceService {
     public Boolean findDoorWaring(String door_address){
         return  deviceMapper.findDoorWaring(door_address);
     }
-
+    public  int UpdateWarningSlaver(String maddr, String saddr){
+        return deviceMapper.UpdateWarningSlaver(maddr,saddr);
+    }
 }

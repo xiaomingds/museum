@@ -30,5 +30,5 @@ public interface DeviceMapper {
     Lamp findLamp(String mid, String lamp_address);
     Relay findRelay(String mid, String relay_address);
     Boolean findDoorWaring(String door_address);
-
+     int UpdateWarningSlaver(String maddr, String saddr);
 }

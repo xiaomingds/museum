@@ -19,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
+import java.util.*;
 
 ;
 
@@ -98,17 +96,40 @@ public class MasterController {
     public ApiResult MasterTime() {
         List<ListDevice>listDevices  = new ArrayList<ListDevice>();
         List<Master> allmaster = masterService.allmaster();
+        List<String> doorwaring = new ArrayList<String>();
         for(Master ma : allmaster){
             ListDevice deviceList = new ListDevice();
 
             List<Slave> slaves= deviceService.mslave(ma.getMaddr());
-            for(Slave sa : slaves){
-                sa.setDoor_address_warning(deviceService.findDoorWaring(sa.getDoor_address())) ;
 
-                if (sa.getErrorcode().equals("01"))
-                    sa.setMove_warning(true);
+            for(Slave sa : slaves){
+//                if(sa.getDoor_address() != null)
+//                sa.setDoor_address_warning(deviceService.findDoorWaring(sa.getDoor_address())) ;
+                if(sa.getSwitch_warning() && sa.getErrorcode() != null){
+
+                    if (sa.getErrorcode().equals("01"))
+                        sa.setMove_warning(true);
+                    else if (sa.getErrorcode().equals("02")) {
+                        if (sa.getDoor_address() != null)
+                            sa.setDoor_address_warning(deviceService.findDoorWaring(sa.getDoor_address()));
+                    } else if (sa.getErrorcode().equals("03")) {
+                        sa.setMove_device_warning(true);
+                    } else if (sa.getErrorcode().equals("04")) {
+                        sa.setTemperature_device_warning(true);
+                    } else
+                        sa.setSlave_dropout(true);
+                }
+                else{
+                    doorwaring.add(sa.getDoor_address());
+
+                }
             }
             List<Door>doors = deviceService.Doors(ma.getMaddr());
+//            for(Door dr :doors){
+//                if (doorwaring.contains(dr.getDoor_address())){
+//                    dr.setWarning(false);
+//                }
+//            }
             List<Lamp>lamps = deviceService.Lamps(ma.getMaddr());
             List<Relay>relays = deviceService.relays(ma.getMaddr());
             deviceList.setWarning(ma.getWarning());

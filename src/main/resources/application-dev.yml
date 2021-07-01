@@ -8,9 +8,9 @@ spring:
 #    url: jdbc:mysql://localhost:3306/museum?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
 #    driver-class-name: com.mysql.jdbc.Driver
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1433;DatabaseName=museum
-    username: root   #sa  10.129.0.110
-    password: 123456   #Aa123@123
+    url: jdbc:sqlserver://10.129.0.110:1433;DatabaseName=museum
+    username: sa   #sa  10.129.0.110
+    password: Aa123@123   #Aa123@123
     maxActive: 20
     initialSize: 1
     maxWait: 60000

@@ -72,4 +72,12 @@
         where
            door_address =#{door_address};
     </select>
+
+    <update id="UpdateWarningSlaver" parameterType="java.lang.String">
+
+        update slave set switch_warning=abs(switch_warning-1)
+
+                        where  maddr = #{maddr} And saddr = #{saddr}
+    </update>
 </mapper>
+

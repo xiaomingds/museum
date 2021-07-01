@@ -105,10 +105,10 @@ public class DeviceController {
 
         String message = null;
         if(sw){
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"01UCD\n-------------------\n";
+            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"02UCD\n-------------------\n";
         }
         else
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"01DCD\n-------------------\n";
+            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"02DCD\n-------------------\n";
         System.out.println("发送网关信息 "+ message);
          socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "门开关成功", "");
@@ -138,6 +138,7 @@ public class DeviceController {
     @GetMapping("/sleep")
     @ApiOperation(value = "设备休眠时间")
     public ApiResult sleepDevice(@RequestParam String  maddr,@RequestParam String saddr,@RequestParam String sleep) {
+
         String message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleep + "SCD\n-------------------\n";
 
         System.out.println("发送网关信息 "+ message);
@@ -205,6 +206,49 @@ public class DeviceController {
         socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "解除移动报警成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/temperaturewaring")
+    @ApiOperation(value = "解除温度传感器报警")
+    public ApiResult clearTemperatureWaring(@RequestParam String maddr,@RequestParam String saddr) {
+
+        String message = null;
+        message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"00TCD\n-------------------\n";
+        System.out.println("发送网关信息 "+ message);
+        socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "解除温度传感器报警", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/moviewaring")
+    @ApiOperation(value = "解除移动传感器报警")
+    public ApiResult clearMovieWaring(@RequestParam String maddr,@RequestParam String saddr) {
+
+        String message = null;
+        message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"00TCD\n-------------------\n";
+        System.out.println("发送网关信息 "+ message);
+        socketService.PostMessage(message);
+        return ApiResultHandler.buildApiResult(200, "解除移动传感器报警", "");
+        //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
+    }
+    @GetMapping("/UpdateWarningSlaver")
+    @ApiOperation(value = "设备报警开关")
+    public ApiResult UpdateWarningSlaver(@RequestParam String maddr,@RequestParam   String saddr, @RequestParam Boolean switch_warning){
+
+        String message = null;
+        if(switch_warning){
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"00ACD\n-------------------\n";
+        }
+        else{
+            message = "-------------------\nHTTP6\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+"00TCD\n-------------------\n";
+        }
+        System.out.println("发送网关信息 "+ message);
+        socketService.PostMessage(message);
+
+
+         if(deviceService.UpdateWarningSlaver(maddr,saddr) == 1){
+             return ApiResultHandler.buildApiResult(200, "", "");
+         }
+        return ApiResultHandler.buildApiResult(500, "", "");
+
     }
 
 }

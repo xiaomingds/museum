@@ -28,5 +28,10 @@ public class Slave {
     String door_address;
     boolean door_address_warning;
     boolean move_warning;
+    boolean move_device_warning;
+    boolean temperature_device_warning;
+    boolean slave_dropout;
+    Boolean switch_warning;
+
 
 }
