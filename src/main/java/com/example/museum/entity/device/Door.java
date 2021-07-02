@@ -14,5 +14,6 @@ public class Door {
     Boolean sw;
     String door_address;
     Boolean warning;
+    String type;
 
 }

@@ -100,17 +100,31 @@ public class DeviceController {
 
     @GetMapping("/switch")
     @ApiOperation(value = "门开关")
-    public ApiResult doorDevice(@RequestParam String maddr,@RequestParam String door_address,@RequestParam boolean sw) {
-        System.out.println("门的地址 "+ door_address);
+    public ApiResult doorDevice(@RequestParam String maddr,@RequestParam String door_address,@RequestParam boolean sw,
+    @RequestParam String type) {
 
         String message = null;
         if(sw){
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"02UCD\n-------------------\n";
+            if(type.equals("1")){
+                message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"01UCD\n-------------------\n";
+
+            }
+            else{
+                message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"02UCD\n-------------------\n";
+
+            }
+
         }
-        else
-            message = "-------------------\nHTTP4\nMaster:"+maddr+'\n'+"SEND:"+"AB"+door_address+"02DCD\n-------------------\n";
+        else {
+            if (type.equals("1")) {
+                message = "-------------------\nHTTP4\nMaster:" + maddr + '\n' + "SEND:" + "AB" + door_address + "01DCD\n-------------------\n";
+
+            } else
+                message = "-------------------\nHTTP4\nMaster:" + maddr + '\n' + "SEND:" + "AB" + door_address + "02DCD\n-------------------\n";
+        }
         System.out.println("发送网关信息 "+ message);
          socketService.PostMessage(message);
+
         return ApiResultHandler.buildApiResult(200, "门开关成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
@@ -138,10 +152,26 @@ public class DeviceController {
     @GetMapping("/sleep")
     @ApiOperation(value = "设备休眠时间")
     public ApiResult sleepDevice(@RequestParam String  maddr,@RequestParam String saddr,@RequestParam String sleep) {
+        String sleeptime = null;
+        String message = null;
+        int time = Integer.parseInt(sleep);
+        if(sleep.length() ==1){
+           sleeptime  = "0" + sleep;
+            message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleeptime + "SCD\n-------------------\n";
 
-        String message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleep + "SCD\n-------------------\n";
+        }
+        else if( time > 99){
+            if(String.valueOf(time/60).length() == 1)
+                sleeptime = "0" + time/60;
+            else
+                sleeptime = String.valueOf(time/60);
+            message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleeptime + "MCD\n-------------------\n";
+        }
+        else
+            message = "-------------------\nHTTP3\nMaster:"+maddr+'\n'+"SEND:"+"AB"+saddr+ sleep + "SCD\n-------------------\n";
 
-        System.out.println("发送网关信息 "+ message);
+
+        System.out.println("发送网关信息 \n"+ message);
         socketService.PostMessage(message);
         return ApiResultHandler.buildApiResult(200, "调节休眠时间成功", "");
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
@@ -230,7 +260,7 @@ public class DeviceController {
         //  return ApiResultHandler.buildApiResult(501, "重置网关成功", "");
     }
     @GetMapping("/UpdateWarningSlaver")
-    @ApiOperation(value = "设备报警开关")
+    @ApiOperation(value = "设备报警开关/更新数据库了")
     public ApiResult UpdateWarningSlaver(@RequestParam String maddr,@RequestParam   String saddr, @RequestParam Boolean switch_warning){
 
         String message = null;
@@ -242,8 +272,6 @@ public class DeviceController {
         }
         System.out.println("发送网关信息 "+ message);
         socketService.PostMessage(message);
-
-
          if(deviceService.UpdateWarningSlaver(maddr,saddr) == 1){
              return ApiResultHandler.buildApiResult(200, "", "");
          }
